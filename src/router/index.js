@@ -13,14 +13,14 @@ const routes = [
     component: () => import('@/views/About.vue')
   },
   {
-    path: '/lightrail',
-    props: (route) => ({ lightrail: route.query }),
-    component: () => import('@/views/LightRail.vue')
+    path: '/contentA',
+    props: (route) => ({ contentA: route.query }),
+    component: () => import('@/views/ContentA.vue')
   },
   {
-    path: '/station',
-    props: (route) => ({ station: route.query }),
-    component: () => import('@/views/Station.vue')
+    path: '/contentB',
+    props: (route) => ({ contentB: route.query }),
+    component: () => import('@/views/ContentB.vue')
   }
 ]
 

@@ -1,16 +1,17 @@
 <template>
   <router-view/>
 </template>
-<script>
-import emitter from '@/configs/mitt.js'
 
+<script>
+import { useWebsocket } from '@/configs/useWebSocket.js'
 export default {
   provide () {
     return {
-      emitter
+      useWebsocket
     }
   }
 }
+
 </script>
 
 <style lang="scss">

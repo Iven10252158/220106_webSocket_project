@@ -1,27 +1,25 @@
 <template>
     <ul class="list-unstyled outer mb-0">
       <li>
-        <router-link :to="{path : 'lightrail', query:{name: 'lightrail', uuid: ''}}" class="text-decoration-none me-5">高雄輕軌</router-link>
+        <router-link :to="{path : 'contentA', query:{ uuid: this.contentA_UUID}}" class="text-decoration-none me-5">contentA</router-link>
       </li>
        <li>
-        <router-link :to="{path : 'station', query:{name: 'station', uuid: ''}}" class="text-decoration-none me-5">高雄火車站</router-link>
+        <router-link :to="{path : 'contentB', query:{ uuid: this.contentB_UUID}}" class="text-decoration-none me-5">contentB</router-link>
       </li>
     </ul>
-    <button type='button' @click="pushUUID">傳送</button>
 </template>
 
 <script>
-import { WS_ADDRESS } from '@/configs/address.js'
+// import { WS_ADDRESS } from '@/configs/address.js'
 
 export default {
-  inject: ['emitter'],
+  inject: ['useWebsocket'],
   data () {
     return {
       connection: null,
       messages: [],
-      uuid: [],
-      lightRail_UUID: '',
-      station_UUID: ''
+      contentA_UUID: '',
+      contentB_UUID: ''
     }
   },
 
@@ -30,31 +28,30 @@ export default {
       console.log(this.connection)
     },
     filterData () {
-      this.messages.forEach((item, index) => {
-        this.uuid.push(item.uuid)
+      const uuid = []
+      this.messages.forEach((item) => {
+        uuid.push(item.uuid)
       })
-      this.lightRail_UUID = this.uuid[0]
-      this.station_UUID = this.uuid[1]
-      // this.pushUUID()
-    },
-    pushUUID () {
-      this.emitter.emit('lightRail-uuid', this.lightRail_UUID)
-      console.log('pushUUID', this.lightRail_UUID)
+      this.contentA_UUID = uuid[0]
+      this.contentB_UUID = uuid[1]
     }
   },
 
   created () {
-    const connection = new WebSocket(WS_ADDRESS)
-    this.connection = connection
-    this.connect()
+    console.log(this.useWebsocket())
+    //   const connection = new WebSocket(WS_ADDRESS)
+    this.connection = this.useWebsocket()
+    //   this.connect()
     this.connection.onopen = (e) => {
       console.log('onOpen事件', e)
       console.log('已成功連線至 WebSocket Server')
     }
 
     this.connection.onmessage = (e) => {
+      console.log('this is onmessage')
       const obj = JSON.parse(e.data)
       this.messages = obj
+      console.log(this.messages)
       this.filterData()
     }
   }
